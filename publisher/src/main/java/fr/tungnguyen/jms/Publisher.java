@@ -22,7 +22,7 @@ import javax.jms.Topic;
  */
 @SpringBootApplication
 @EnableJms
-public class Application {
+public class Publisher {
 
     @Bean
     public JmsListenerContainerFactory<?> myFactory(ConnectionFactory connectionFactory,
@@ -42,7 +42,7 @@ public class Application {
     }
 
     public static void main(String[] args) {
-        ConfigurableApplicationContext context = SpringApplication.run(Application.class, args);
+        ConfigurableApplicationContext context = SpringApplication.run(Publisher.class, args);
 
         JmsTemplate jmsTemplate = context.getBean(JmsTemplate.class);
 

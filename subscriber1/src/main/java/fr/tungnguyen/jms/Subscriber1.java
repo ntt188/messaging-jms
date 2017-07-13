@@ -1,5 +1,7 @@
 package fr.tungnguyen.jms;
 
+import org.apache.activemq.ActiveMQConnectionFactory;
+import org.apache.activemq.RedeliveryPolicy;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jms.DefaultJmsListenerContainerFactoryConfigurer;
@@ -18,7 +20,7 @@ import javax.jms.ConnectionFactory;
  */
 @SpringBootApplication
 @EnableJms
-public class Application {
+public class Subscriber1 {
 
     @Bean
     public JmsListenerContainerFactory<?> myFactory(ConnectionFactory connectionFactory,
@@ -26,6 +28,12 @@ public class Application {
         DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
         // This provides all boot's default to this factory, including the message converter
         configurer.configure(factory, connectionFactory);
+        RedeliveryPolicy redeliveryPolicy = new RedeliveryPolicy();
+        redeliveryPolicy.setMaximumRedeliveries(-1);
+        redeliveryPolicy.setRedeliveryDelay(4000);
+        redeliveryPolicy.setUseExponentialBackOff(true);
+        redeliveryPolicy.setBackOffMultiplier(2);
+        ((ActiveMQConnectionFactory)connectionFactory).setRedeliveryPolicy(redeliveryPolicy);
         // You could still override some of Boot's default if necessary.
         factory.setPubSubDomain(true);
         factory.setSubscriptionDurable(true);
@@ -43,6 +51,6 @@ public class Application {
 
     public static void main(String[] args) {
         // Launch the application
-        SpringApplication.run(Application.class, args);
+        SpringApplication.run(Subscriber1.class, args);
     }
 }

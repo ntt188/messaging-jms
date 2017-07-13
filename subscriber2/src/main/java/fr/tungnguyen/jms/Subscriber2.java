@@ -18,7 +18,7 @@ import javax.jms.ConnectionFactory;
  */
 @SpringBootApplication
 @EnableJms
-public class Application {
+public class Subscriber2 {
 
     @Bean
     public JmsListenerContainerFactory<?> myFactory(ConnectionFactory connectionFactory,
@@ -43,6 +43,6 @@ public class Application {
 
     public static void main(String[] args) {
         // Launch the application
-        SpringApplication.run(Application.class, args);
+        SpringApplication.run(Subscriber2.class, args);
     }
 }
